@@ -1,5 +1,6 @@
 package co.edu.uniquindio.poo.model;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class Tienda {
@@ -167,6 +168,16 @@ public class Tienda {
         return listaCodigosMayores;
     }
     //punto 3
+    public List<Cliente> clientesComprados7(LocalDate fechaConsula){
+        List<Cliente> listaClientes7=new LinkedList<>();
+        for(Factura ayuda : listaFacturas){
+            if(ayuda.fecha().equals(fechaConsula)){
+                listaClientes7.add(ayuda.cliente());
+            }
+        }
+        return listaClientes7;
+    }
+    //punto 4
 
 
 

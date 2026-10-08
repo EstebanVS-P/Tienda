@@ -1,7 +1,9 @@
 package co.edu.uniquindio.poo.model;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Cliente {
@@ -14,7 +16,7 @@ public class Cliente {
 
     private final Tienda ownedByTienda;
 
-    private final List<Factura> listaFacturas=new ArrayList<>();
+    private final List<Factura> listaFacturas=new LinkedList<>();
 
     public Cliente(String documentoIdentidad, String nombreCompleto, String telefono, String correo, String ciudadResidencia, Tienda ownedByTienda) {
         this.documentoIdentidad = documentoIdentidad;
