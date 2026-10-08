@@ -178,7 +178,16 @@ public class Tienda {
         return listaClientes7;
     }
     //punto 4
-
+    public List<Factura> facturaClienteC(String letraBuscar){
+        List<Factura> listaFacturasC = new LinkedList<>();
+        for(Factura ayuda : listaFacturas){
+            if(ayuda.tieneCliente(letraBuscar)==true){
+                listaFacturasC.add(ayuda);
+            }
+        }
+        return listaFacturasC;
+    }
+    //punto 5
 
 
 

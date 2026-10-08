@@ -21,4 +21,13 @@ public record Factura(String codigo, LocalDate fecha, double total, EstadoFactur
     public void agregarDetallesFactura(DetalleFactura detalleFactura){
         listaDetallesFactura.add(detalleFactura);
     }
+
+    public boolean tieneCliente(String letraBuscar){
+        boolean noEncontrado = true;
+        boolean resultado = cliente.nombreLetra(letraBuscar);
+        if(resultado==true){
+            return false;
+        }
+        return noEncontrado;
+    }
 }

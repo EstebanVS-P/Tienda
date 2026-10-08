@@ -63,4 +63,7 @@ public class Cliente {
                 ", ciudadResidencia='" + ciudadResidencia + '\'' +
                 '}';
     }
+    public boolean nombreLetra(String letraBuscar){
+        return nombreCompleto.startsWith(letraBuscar);
+    }
 }
