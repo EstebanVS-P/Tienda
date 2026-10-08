@@ -148,7 +148,7 @@ public class Tienda {
     }
     //Taller punto 1
     public List<Producto> mostrarProductosCanMayorDiez(){
-        List<Producto> listaProductosMayores = new ArrayList<>();
+        List<Producto> listaProductosMayores = new LinkedList<>();
         for(Producto ayuda: listaProductos.values()){
             if(ayuda.getCantidadDisponible()>=10){
                 listaProductosMayores.add(ayuda);
@@ -157,7 +157,16 @@ public class Tienda {
         return listaProductosMayores;
     }
     //punto 2
-
+    public List<String> productosMayoresCodigos(){
+        List<String> listaCodigosMayores = new LinkedList<>();
+        for(Producto ayuda: listaProductos.values()){
+            if(ayuda.getCantidadDisponible()>=10 && ayuda.getCantidadDisponible()<50){
+                listaCodigosMayores.add(ayuda.getCodigo());
+            }
+        }
+        return listaCodigosMayores;
+    }
+    //punto 3
 
 
 
