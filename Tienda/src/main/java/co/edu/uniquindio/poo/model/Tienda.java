@@ -147,14 +147,18 @@ public class Tienda {
         return noEncontrada;
     }
     //Taller punto 1
-    public String mostrarProductosCanMayorDiez(int cantidadComprada, String codigoProducto){
-        String mensaje = "";
-        int stock = obtenerStock(codigoProducto);
-        if(stock>=10) {
-            mensaje = "El producto tiene en stock 10 unidades.";
-        }else{ return "El producto no tiene en stock 10 unidades."; }
-        return mensaje;
+    public List<Producto> mostrarProductosCanMayorDiez(){
+        List<Producto> listaProductosMayores = new ArrayList<>();
+        for(Producto ayuda: listaProductos.values()){
+            if(ayuda.getCantidadDisponible()>=10){
+                listaProductosMayores.add(ayuda);
+            }
+        }
+        return listaProductosMayores;
     }
+    //punto 2
+
+
 
 
 
