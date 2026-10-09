@@ -3,12 +3,9 @@ package co.edu.uniquindio.poo.app;
 import co.edu.uniquindio.poo.model.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import javax.swing.*;
-import java.util.Optional;
 
 public class Main {
     public static void main(String args[]){
@@ -34,7 +31,18 @@ public class Main {
                     "\n7. Generar Factura."+
                     "\n8. Eliminar la factura."+
                     "\n9. Buscar factura."+
-                    "\n14. Salir."));
+                    "\n10. Mostrar los productos ordenados de precio menor a mayor."+
+                    "\n11. Mostrar los productos ordenados de precio menor a mayor."+
+                    "\n12. Mostrar los productos ordenados de precio menor a mayor."+
+                    "\n13. Mostrar los productos ordenados de precio menor a mayor."+
+                    "\n14. Mostrar los productos ordenados de precio menor a mayor."+
+                    "\n15. Mostrar las facturas de un cliente que se llame juan y compre un iphone 16pro max."+
+                    "\n16. Mostrar los productos de una categoria."+
+                    "\n17. Mostrar los productos en un rango de precios."+
+                    "\n18. Mostrar los productos ordenados de precio menor a mayor."+
+                    "\n19. Mostrar el producto con el precio mayor."+
+                    "\n20. Salir."));
+
 
             switch(opcion){
                 case 1: crearCliente(tienda);
@@ -55,7 +63,27 @@ public class Main {
                     break;
                 case 9 : mostrarFacturaMain(tienda);
                     break;
-                case 14: JOptionPane.showMessageDialog(null, "Gracias por usar el sistema.");
+                case 10: crearCliente(tienda);
+                    break;
+                case 11: eliminarClienteMain(tienda);
+                    break;
+                case 12: mostrarCliente(tienda);
+                    break;
+                case 13: crearProducto(tienda);
+                    break;
+                case 14: mostrarProducto(tienda);
+                    break;
+                case 15 : eliminarProducto(tienda);
+                    break;
+                case 16 : generarFactura(tienda);
+                    break;
+                case 17 : eliminarFacturaMain(tienda);
+                    break;
+                case 18 : mostrarFacturaMain(tienda);
+                    break;
+                case 19 : mostrarFacturaMain(tienda);
+                    break;
+                case 20: JOptionPane.showMessageDialog(null, "Gracias por usar el sistema.");
                     break;
                 default: JOptionPane.showMessageDialog(null, "Opcion invalida.");
                     break;
@@ -111,7 +139,7 @@ public class Main {
         }
     }
     public static void eliminarProducto(Tienda tienda){
-        String codigo = JOptionPane.showInputDialog(null,"Ingresa el codigo del producto que quieres ver: ");
+        String codigo = JOptionPane.showInputDialog(null,"Ingresa el codigo del producto que quieres eliminar: ");
 
         boolean noEncontrado = tienda.eliminarProducto(codigo);
         if(noEncontrado==false){
@@ -120,67 +148,123 @@ public class Main {
             JOptionPane.showMessageDialog(null,"El Producto que tratas de eliminar no exite.");
         }
     }
-    public static void generarFactura(Tienda tienda){
+    public static void generarFactura(Tienda tienda) {
+        Optional<Cliente> clienteOption = buscarClienteFactura(tienda);
+        if(clienteOption.isEmpty()){
+            return;
+        }
+        Cliente cliente = clienteOption.get();
+
+        ArrayList<DetalleFactura> listaDetalles = agregarDetallesFactura(tienda);
+        if(listaDetalles.isEmpty()){
+            return;
+        }
+        MetodoPago metodo = preguntarMetodoPago();
+
+        EstadoFactura estadoFactura = preguntarEstadoFactura();
+
+        Random numero = new Random();
+        String codigo = String.valueOf(numero.nextInt(9000)+1000);
+
+        double total = 0;
+        for(DetalleFactura ayuda: listaDetalles) {
+            total = total+ayuda.getSubTotal();
+        }
+        LocalDate fecha = LocalDate.now();
+
+        String resultado = tienda.registrarFactura(cliente,metodo,estadoFactura,codigo,total,fecha,listaDetalles);
+        JOptionPane.showMessageDialog(null,resultado);
+    }
+    public static Optional<Cliente> buscarClienteFactura(Tienda tienda){
         String documentoIdentidad= JOptionPane.showInputDialog(null, "Ingresa el documento de identidad del cliente:");
 
         Optional<Cliente> clienteMostrar = tienda.buscarCliente(documentoIdentidad);
 
-        if(clienteMostrar.isPresent()) {
-            Cliente clienteFactura = clienteMostrar.get();
-
-            String codigoProducto = JOptionPane.showInputDialog(null,"Ingresa el codigo del producto que quieres ver: ");
-
-
-            int cantidadComprada = Integer.valueOf(JOptionPane.showInputDialog(null, "Ingresa la cantidad de productos a comprar:"));
-            int nuevoStock = tienda.disminuirStock(cantidadComprada,codigoProducto);
-            if(nuevoStock==-1){
-                JOptionPane.showMessageDialog(null,"La cantidad de productos que deseas comprar no esta disponible"+
-                                                                        "\nen el momento tenemos disponibles "+ tienda.obtenerStock(codigoProducto)+" unidades.");
-                return;
-            }
-            double subTotal = tienda.obtenerPrecioUnidad(codigoProducto);
-            if(subTotal==0){
-                JOptionPane.showMessageDialog(null,"El codigo del producto no existe.");
-                return;
-            }
-
-            Optional<Producto> producto = tienda.buscarProducto(codigoProducto);
-            DetalleFactura detalleFactura = new DetalleFactura(cantidadComprada, subTotal, producto.get());
-            ArrayList<DetalleFactura> listaDetalles=new ArrayList<>();
-
-            Random random = new Random();
-            int codigo = random.nextInt(9000) + 1000;
-
-            MetodoPago metodo;
-
-            byte opcion = Byte.valueOf(JOptionPane.showInputDialog(null, "Ingresa el metodo de pago (Efectivo: 1, Tarjeta debito: 2" +
-                    "\nTarjeta credito: 3, Transferencia: 4): "));
-
-            switch (opcion) {
-                case 1:
-                    metodo = MetodoPago.EFECTIVO;
-                    break;
-                case 2:
-                    metodo = MetodoPago.TARJETA_DEBITO;
-                    break;
-                case 3:
-                    metodo = MetodoPago.TARJETA_CREDITO;
-                    break;
-                case 4:
-                    metodo = MetodoPago.TRANSFERENCIA;
-                    break;
-                default:
-                    metodo = null;
-                    break;
-            }
-            Factura factura = new Factura("" + codigo, LocalDate.now(), subTotal * cantidadComprada, EstadoFactura.GENERADA, metodo, clienteFactura,listaDetalles);
-            JOptionPane.showMessageDialog(null,"El codigo de tu factura es: "+codigo+" (recuerda guardarlo,"+
-                                                                    "\npues te sera util mas adelante).");
-            factura.agregarDetallesFactura(detalleFactura);
-            tienda.agregarFactura(factura);
-        }else{ JOptionPane.showMessageDialog(null,  "No existe un cliente que tenga ese documento de identidad."); }
+        return clienteMostrar;
     }
+    public static MetodoPago preguntarMetodoPago(){
+        MetodoPago metodo;
+        byte opcion = Byte.valueOf(JOptionPane.showInputDialog(null, "Ingresa el metodo de pago (Efectivo: 1, Tarjeta debito: 2" +
+                                                                                          "\nTarjeta credito: 3, Transferencia: 4): "));
 
+        switch (opcion) {
+            case 1:
+                metodo = MetodoPago.EFECTIVO;
+                break;
+            case 2:
+                metodo = MetodoPago.TARJETA_DEBITO;
+                break;
+            case 3:
+                metodo = MetodoPago.TARJETA_CREDITO;
+                break;
+            case 4:
+                metodo = MetodoPago.TRANSFERENCIA;
+                break;
+            default:
+                metodo = null;
+                break;
+        }
+        return metodo;
+    }
+    public static EstadoFactura preguntarEstadoFactura(){
+        EstadoFactura estadoFactura;
+        byte opcion = Byte.valueOf(JOptionPane.showInputDialog(null, "Ingresa el estado de la factura (Generada: 1, Cancelada: 2" +
+                                                                                          "\nEnviada: 3, Pagada: 4): "));
+
+        switch (opcion) {
+            case 1:
+                estadoFactura = EstadoFactura.GENERADA;
+                break;
+            case 2:
+                estadoFactura = EstadoFactura.CANCELADA;
+                break;
+            case 3:
+                estadoFactura = EstadoFactura.ENVIADA;
+                break;
+            case 4:
+                estadoFactura = EstadoFactura.PAGADA;
+                break;
+            default:
+                estadoFactura = null;
+                break;
+        }
+        return estadoFactura;
+    }
+    public static ArrayList<DetalleFactura> agregarDetallesFactura(Tienda tienda){
+        ArrayList<DetalleFactura> listaDetalles=new ArrayList<>();
+        byte agregarOtro = 0;
+        do {
+            double subTotal = 0;
+            String codigoProducto = JOptionPane.showInputDialog(null, "Ingresa el codigo del producto que quieres comprar: ");
+            Optional<Producto> producto = tienda.buscarProducto(codigoProducto);
+            if(producto.isPresent()) {
+                int cantidadComprada = Integer.valueOf(JOptionPane.showInputDialog(null, "Ingresa la cantidad de productos a comprar:"));
+                if(cantidadComprada>0) {
+                    subTotal = tienda.obtenerPrecioUnidad(codigoProducto) * cantidadComprada;
+
+                    int nuevoStock = tienda.disminuirStock(cantidadComprada, codigoProducto);
+                    if (nuevoStock == -1) {
+                        JOptionPane.showMessageDialog(null, "La cantidad de productos que deseas comprar no esta disponible" +
+                                                                                 "\nen el momento tenemos disponibles " + tienda.obtenerStock(codigoProducto) + " unidades" +
+                                                                                 "\neste producto no se agregara a la factura.");
+                        break;
+                    }
+                    DetalleFactura detalleFactura = new DetalleFactura(cantidadComprada, subTotal, producto.get());
+                    listaDetalles.add(detalleFactura);
+                }else{
+                    JOptionPane.showMessageDialog(null, "Cantidad no valida, este producto no se agregara a la factura.");
+                    break;
+                }
+            }else{
+                JOptionPane.showMessageDialog(null, "No existe producto con ese codigo, este producto no se agregara a la factura.");
+                break;
+            }
+
+            agregarOtro = Byte.valueOf(JOptionPane.showInputDialog(null, "¿Quieres agregar otro producto? 1. Si y 2. No "));
+        }while(agregarOtro == 1);
+
+        return listaDetalles;
+    }
     public static void eliminarFacturaMain(Tienda tienda){
         JOptionPane.showMessageDialog(null,"Se recomienda ver primero la factura para saber el codigo.");
         String codigo= JOptionPane.showInputDialog(null, "Ingresa el codigo de la factura a eliminar:");

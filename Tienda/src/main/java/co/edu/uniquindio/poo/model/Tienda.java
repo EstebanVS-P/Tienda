@@ -76,7 +76,7 @@ public class Tienda {
     }
     public String registrarProducto(String nombre, String codigo, String descripcion, int cantidadDisponible, float precio, Categoria categoria){
         Optional<Producto> productoEncontrar = buscarProducto(codigo);
-        if(productoEncontrar.isPresent()){
+        if(productoEncontrar.isEmpty()){
             Producto producto = new Producto(nombre,codigo,descripcion,cantidadDisponible,precio,categoria,this);
             listaProductos.put(productoEncontrar.get().getCodigo(),producto);
             return "Producto registrado con exito.";
@@ -115,7 +115,7 @@ public class Tienda {
     public int disminuirStock(int cantidadComprada, String codigoProducto) {
         int stock = obtenerStock(codigoProducto);
         int nuevoStock = 0;
-        if (stock > cantidadComprada) {
+        if (stock >= cantidadComprada) {
             nuevoStock = stock - cantidadComprada;
         } else {
             return -1;
@@ -136,8 +136,14 @@ public class Tienda {
         return precio;
     }
 
-    public void agregarFactura(Factura factura) {
-        listaFacturas.add(factura);
+    public String registrarFactura(Cliente cliente, MetodoPago metodo, EstadoFactura estadoFactura, String codigo, double total, LocalDate fecha, ArrayList<DetalleFactura> listaDetalles) {
+        Optional<Factura> facturaEncontrar = buscarFactura(codigo);
+        if(facturaEncontrar.isEmpty()) {
+            Factura factura = new Factura(codigo, fecha, total, estadoFactura, metodo, cliente, listaDetalles);
+            listaFacturas.add(factura);
+            return "Factura creada con exito.";
+        }
+        return "No se puede crear, ya existe una factura con este codigo.";
     }
 
     public Optional<Factura> buscarFactura(String codigo) {
@@ -256,15 +262,4 @@ public class Tienda {
         }
         return Optional.of(producto);
     }
-
-
-
-
-
-
-
-
-
-
-
 }
