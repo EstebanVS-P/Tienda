@@ -183,7 +183,6 @@ public class Main {
 
     public static void eliminarFacturaMain(Tienda tienda){
         JOptionPane.showMessageDialog(null,"Se recomienda ver primero la factura para saber el codigo.");
-
         String codigo= JOptionPane.showInputDialog(null, "Ingresa el codigo de la factura a eliminar:");
         boolean noEncontrada= tienda.eliminarFactura(codigo);
         if(noEncontrada==false){

@@ -232,6 +232,15 @@ public class Tienda {
         }
         return listaProductosRango;
     }
+    //punto 9
+    public List<Producto> productosMenorMayor(){
+        List<Producto> listaProductosMenorMayor = new LinkedList<>(listaProductos.values());
+
+        listaProductosMenorMayor.sort(Comparator.comparing(Producto::getPrecio));
+
+        return listaProductosMenorMayor;
+    }
+
 
 
 
