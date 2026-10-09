@@ -3,6 +3,7 @@ package co.edu.uniquindio.poo.model;
 import java.time.LocalDate;
 import java.util.*;
 
+
 public class Tienda {
 
     private final String nombre;
@@ -186,7 +187,7 @@ public class Tienda {
     public List<Factura> facturaClienteC(String letraBuscar){
         List<Factura> listaFacturasC = new LinkedList<>();
         for(Factura ayuda : listaFacturas){
-            if(ayuda.tieneCliente(letraBuscar)==true){
+            if(ayuda.tieneCliente(letraBuscar)==false){
                 listaFacturasC.add(ayuda);
             }
         }
@@ -240,14 +241,21 @@ public class Tienda {
 
         return listaProductosMenorMayor;
     }
-
-
-
-
-
-
-
-
+    //punto 10
+    public Optional<Producto> buscarProductoMayor(){
+        float precioMayor = -1;
+        Producto producto = null;
+        for(Producto ayuda : listaProductos.values()){
+            if(ayuda.getPrecio()>precioMayor){
+                precioMayor= ayuda.getPrecio();
+                producto=ayuda;
+            }
+        }
+        if(producto==null){
+            return Optional.empty();
+        }
+        return Optional.of(producto);
+    }
 
 
 
