@@ -66,4 +66,7 @@ public class Cliente {
     public boolean nombreLetra(String letraBuscar){
         return nombreCompleto.startsWith(letraBuscar);
     }
+    public boolean nombreCliente(){
+        return nombreCompleto.equals("Juan");
+    }
 }

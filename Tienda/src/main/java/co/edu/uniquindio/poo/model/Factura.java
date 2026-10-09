@@ -35,10 +35,20 @@ public record Factura(String codigo, LocalDate fecha, double total, EstadoFactur
     public List<DetalleFactura> detallesFacturaIphone(){
         List<DetalleFactura> listaIphone=new LinkedList<>();
         for(DetalleFactura ayuda : listaDetallesFactura){
-            if(ayuda.getProducto().getCategoria().equals(Categoria.CELULARES)){
+            if(ayuda.getProducto().getNombre().equals("Iphone 16pro max")){
                 listaIphone.add(ayuda);
             }
         }
         return listaIphone;
+    }
+    public List<DetalleFactura> nombreProducto(){
+        List<DetalleFactura> listaIphoneJuan=new LinkedList<>();
+        boolean resultado = cliente.nombreCliente();
+        for(DetalleFactura ayuda: listaDetallesFactura){
+            if(ayuda.getProducto().getNombre().equals("Iphone 16pro max")&& resultado==true){
+                listaIphoneJuan.add(ayuda);
+            }
+        }
+        return listaIphoneJuan;
     }
 }
