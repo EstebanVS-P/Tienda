@@ -207,8 +207,16 @@ public class Tienda {
         }
         return listaFactura;
     }
-    //punto 7 
-
+    //punto 7
+    public List<Producto> productosCategoria(Categoria categoriaSeleccionada){
+        List<Producto> listaPrductosCategoria = new LinkedList<>();
+        for(Producto ayuda: listaProductos.values()){
+            if(ayuda.getCategoria()==categoriaSeleccionada){
+                listaPrductosCategoria.add(ayuda);
+            }
+        }
+        return listaPrductosCategoria;
+    }
 
 
 

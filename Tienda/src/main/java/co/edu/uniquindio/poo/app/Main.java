@@ -4,6 +4,7 @@ import co.edu.uniquindio.poo.model.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import javax.swing.*;
@@ -214,6 +215,19 @@ public class Main {
             JOptionPane.showMessageDialog(null,facturaMostrar.get().toString());
         }else{
             JOptionPane.showMessageDialog(null,"No existe una factura con ese codigo.");
+        }
+    }
+    public static void pregunta7 (Tienda tienda){
+        String categoria = JOptionPane.showInputDialog(null,"Ingresa la categoria de la cual quieres saber todos sus productos:");
+        Categoria categoriaSeleccionada = Categoria.valueOf(categoria.toUpperCase());
+
+        List<Producto> productosCategoria = tienda.productosCategoria(categoriaSeleccionada);
+        if(!productosCategoria.isEmpty()){
+            for(Producto ayuda: productosCategoria){
+                JOptionPane.showMessageDialog(null, ayuda.toString());
+            }
+        }else {
+            JOptionPane.showMessageDialog(null, "Esa categoria no existe.");
         }
     }
 }
