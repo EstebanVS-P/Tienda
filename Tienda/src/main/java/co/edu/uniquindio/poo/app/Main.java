@@ -21,28 +21,6 @@ public class Main {
 
         Tienda tienda = new Tienda(nombreTienda,nit,telefono);
 
-        Producto producto1 = new Producto("Iphone 18pro", "1234", "Iphone 18 pro de 256gb" , 10, 6200000, Categoria.CELULARES, tienda);
-        Producto producto2 = new Producto("Acer Aspire Lite 15", "4321", "Computador de 16gb de RAM y 512 de almacenamiento" , 10, 3200000, Categoria.COMPUTADORES, tienda);
-        Producto producto3 = new Producto("GTA 6", "6666", "Video juego GTA 6" , 10, 350000, Categoria.VIDEO_JUEGOS, tienda);
-        Producto producto4 = new Producto("Xiaomi Smart Band 9", "3333", "Reloj deportivo Xiaomi Smart Band 9" , 10, 180000, Categoria.ACCESORIOS, tienda);
-        Producto producto5 = new Producto("RTX 5090", "1111", "Tarjeta Gráfica GeForce RTX 5090 de 32GB" , 10, 19900000, Categoria.COMPONENTE, tienda);
-        Producto producto6 = new Producto("Iphone 16pro max", "2222", "Iphone 16 pro max de 256gb" , 25, 4200000, Categoria.CELULARES, tienda);
-        Producto producto7 = new Producto("HP VICTUS", "2131", "PORTATIL GAMER HP VICTUS RYZEN 7-7445HS RTX 3050 8GB 512GB" , 15, 4200000, Categoria.COMPUTADORES, tienda);
-        Producto producto8 = new Producto("GTA 5", "4444", "Video juego GTA 5" , 20, 150000, Categoria.VIDEO_JUEGOS, tienda);
-        Producto producto9 = new Producto("Xiaomi Smart Band 7", "5555", "Reloj deportivo Xiaomi Smart Band 7" , 20, 95000, Categoria.ACCESORIOS, tienda);
-        Producto producto10 = new Producto("RTX 3050", "7777", "Tarjeta Gráfica GeForce RTX 3050 de 8GB" , 30, 1900000, Categoria.COMPONENTE, tienda);
-
-        tienda.agregarProducto(producto1);
-        tienda.agregarProducto(producto2);
-        tienda.agregarProducto(producto3);
-        tienda.agregarProducto(producto4);
-        tienda.agregarProducto(producto5);
-        tienda.agregarProducto(producto6);
-        tienda.agregarProducto(producto7);
-        tienda.agregarProducto(producto8);
-        tienda.agregarProducto(producto9);
-        tienda.agregarProducto(producto10);
-
         int opcion;
 
         do{
@@ -50,11 +28,12 @@ public class Main {
                     "1. Agregar un cliente."+
                     "\n2. Eliminar al cliente."+
                     "\n3. Buscar cliente."+
-                    "\n4. Buscar producto."+
-                    "\n5. Eliminar Producto."+
-                    "\n6. Generar Factura."+
-                    "\n7. Eliminar la factura."+
-                    "\n8. Buscar factura."+
+                    "\n4. Agregar poducto."+
+                    "\n5. Buscar producto."+
+                    "\n6. Eliminar Producto."+
+                    "\n7. Generar Factura."+
+                    "\n8. Eliminar la factura."+
+                    "\n9. Buscar factura."+
                     "\n14. Salir."));
 
             switch(opcion){
@@ -64,15 +43,17 @@ public class Main {
                     break;
                 case 3: mostrarCliente(tienda);
                     break;
-                case 4: mostrarProducto(tienda);
+                case 4: crearProducto(tienda);
                     break;
-                case 5 : eliminarProducto(tienda);
+                case 5: mostrarProducto(tienda);
                     break;
-                case 6 : generarFactura(tienda);
+                case 6 : eliminarProducto(tienda);
                     break;
-                case 7 : eliminarFacturaMain(tienda);
+                case 7 : generarFactura(tienda);
                     break;
-                case 8 : mostrarFacturaMain(tienda);
+                case 8 : eliminarFacturaMain(tienda);
+                    break;
+                case 9 : mostrarFacturaMain(tienda);
                     break;
                 case 14: JOptionPane.showMessageDialog(null, "Gracias por usar el sistema.");
                     break;
@@ -109,10 +90,19 @@ public class Main {
             JOptionPane.showMessageDialog(null,"El cliente que tratas de eliminar no exite.");
         }
     }
+    public static void crearProducto(Tienda tienda){
+        String nombre= JOptionPane.showInputDialog(null,"Ingresa el nombre del producto:  ");
+        String codigo = JOptionPane.showInputDialog(null,"Ingresa la ciudad de residencia del cliente: ");
+        String descripcion = JOptionPane.showInputDialog(null,"Ingresa la descripcion del producto: ");
+        int cantidadDisponible = Integer.valueOf(JOptionPane.showInputDialog(null,"Ingresa la cantidad disponible de productos: "));
+        float precio = Float.valueOf(JOptionPane.showInputDialog(null,"ingresa el precio del producto: "));
+        Categoria categoria = Categoria.valueOf(JOptionPane.showInputDialog(null,"Ingresa la categoria del producto: ").toUpperCase().trim());
+
+        String resultado = tienda.registrarProducto(nombre, codigo, descripcion, cantidadDisponible, precio, categoria);
+        JOptionPane.showMessageDialog(null,  resultado);
+    }
     public static void mostrarProducto(Tienda tienda){
-        String codigo = JOptionPane.showInputDialog(null,"Ingresa el codigo del producto que quieres ver"+
-                                                                              "\n(Computadores: 4321 y 2131, Celulares: 1234 y 2222, Video Juego: 6666 y 4444)"+
-                                                                              "\n(Accesorio: 3333 y 5555, Componentes: 1111 y 7777): ");
+        String codigo = JOptionPane.showInputDialog(null,"Ingresa el codigo del producto que quieres ver:");
         Optional<Producto> productoMostrar = tienda.buscarProducto(codigo);
         if(productoMostrar.isPresent()){
             JOptionPane.showMessageDialog(null,productoMostrar.get().toString());
@@ -121,9 +111,7 @@ public class Main {
         }
     }
     public static void eliminarProducto(Tienda tienda){
-        String codigo = JOptionPane.showInputDialog(null,"Ingresa el codigo del producto que quieres ver"+
-                                                                              "\n(Computadores: 4321 y 2131, Celulares: 1234 y 2222, Video Juego: 6666 y 4444)"+
-                                                                              "\n(Accesorio: 3333 y 5555, Componentes: 1111 y 7777): ");
+        String codigo = JOptionPane.showInputDialog(null,"Ingresa el codigo del producto que quieres ver: ");
 
         boolean noEncontrado = tienda.eliminarProducto(codigo);
         if(noEncontrado==false){
@@ -140,9 +128,7 @@ public class Main {
         if(clienteMostrar.isPresent()) {
             Cliente clienteFactura = clienteMostrar.get();
 
-            String codigoProducto = JOptionPane.showInputDialog(null,"Ingresa el codigo del producto que quieres ver"+
-                                                                                          "\n(Computadores: 4321 y 2131, Celulares: 1234 y 2222, Video Juego: 6666 y 4444)"+
-                                                                                          "\n(Accesorio: 3333 y 5555, Componentes: 1111 y 7777): ");
+            String codigoProducto = JOptionPane.showInputDialog(null,"Ingresa el codigo del producto que quieres ver: ");
 
 
             int cantidadComprada = Integer.valueOf(JOptionPane.showInputDialog(null, "Ingresa la cantidad de productos a comprar:"));

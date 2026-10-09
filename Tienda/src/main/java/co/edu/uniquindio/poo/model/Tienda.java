@@ -61,7 +61,7 @@ public class Tienda {
     // cambiar esto if(clienteEncontrado!=null){ por un optional
     //hacer el metodo buscar cliente con optional
     public Optional<Cliente> buscarCliente(String documentoIdentidad) {
-        return listaClientes.stream().filter(cliente -> documentoIdentidad.equals(cliente.getDocumentoIdentidad())).findFirst();
+        return listaClientes.stream().filter(cliente -> cliente.getDocumentoIdentidad().equals(documentoIdentidad)).findFirst();
     }
 
     public boolean eliminarCliente(String documentoIdentidad) {
@@ -73,9 +73,14 @@ public class Tienda {
         }
         return noEncontrado;
     }
-
-    public void agregarProducto(Producto producto) {
-        listaProductos.put(producto.getCodigo(), producto);
+    public String registrarProducto(String nombre, String codigo, String descripcion, int cantidadDisponible, float precio, Categoria categoria){
+        Optional<Producto> productoEncontrar = buscarProducto(codigo);
+        if(productoEncontrar.isPresent()){
+            Producto producto = new Producto(nombre,codigo,descripcion,cantidadDisponible,precio,categoria,this);
+            listaProductos.put(productoEncontrar.get().getCodigo(),producto);
+            return "Producto registrado con exito.";
+        }
+        return "No se puede registrar, pues ya existe un producto con esta informacion";
     }
 
     public Optional<Producto> buscarProducto(String codigo) {
@@ -217,8 +222,16 @@ public class Tienda {
         }
         return listaPrductosCategoria;
     }
-
-
+    //punto 8
+    public List<Producto> precioRango(float precioMaximo, float precioMinimo){
+        List<Producto> listaProductosRango = new LinkedList<>();
+        for(Producto ayuda: listaProductos.values()){
+            if(ayuda.getPrecio()>=precioMinimo && ayuda.getPrecio()<=precioMaximo){
+                listaProductosRango.add(ayuda);
+            }
+        }
+        return listaProductosRango;
+    }
 
 
 
