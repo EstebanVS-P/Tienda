@@ -145,7 +145,8 @@ public class Main {
                 return;
             }
 
-            DetalleFactura detalleFactura = new DetalleFactura(cantidadComprada, subTotal);
+            Optional<Producto> producto = tienda.buscarProducto(codigoProducto);
+            DetalleFactura detalleFactura = new DetalleFactura(cantidadComprada, subTotal, producto.get());
             ArrayList<DetalleFactura> listaDetalles=new ArrayList<>();
 
             Random random = new Random();

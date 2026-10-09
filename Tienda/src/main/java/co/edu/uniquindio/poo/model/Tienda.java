@@ -188,8 +188,16 @@ public class Tienda {
         return listaFacturasC;
     }
     //punto 5
-
-
+    public List<Factura> facturaIphone(){
+        List<Factura> listaFacturaIphone=new LinkedList<>();
+        for(Factura ayuda : listaFacturas){
+            if(!ayuda.detallesFacturaIphone().isEmpty()){
+                listaFacturaIphone.add(ayuda);
+            }
+        }
+        return listaFacturaIphone;
+    }
+    //punto 6
 
 
 

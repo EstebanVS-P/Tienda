@@ -2,6 +2,8 @@ package co.edu.uniquindio.poo.model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 //El record una vez se le agregan los datos jamas se pueden modificar
 public record Factura(String codigo, LocalDate fecha, double total, EstadoFactura estadoFactura,
@@ -29,5 +31,14 @@ public record Factura(String codigo, LocalDate fecha, double total, EstadoFactur
             return false;
         }
         return noEncontrado;
+    }
+    public List<DetalleFactura> detallesFacturaIphone(){
+        List<DetalleFactura> listaIphone=new LinkedList<>();
+        for(DetalleFactura ayuda : listaDetallesFactura){
+            if(ayuda.getProducto().getCategoria().equals(Categoria.CELULARES)){
+                listaIphone.add(ayuda);
+            }
+        }
+        return listaIphone;
     }
 }
