@@ -145,7 +145,6 @@ public class Tienda {
         }
         return "No se puede crear, ya existe una factura con este codigo.";
     }
-
     public Optional<Factura> buscarFactura(String codigo) {
         return listaFacturas.stream().filter(factura -> factura.codigo().equals(codigo)).findFirst();
     }
@@ -261,5 +260,15 @@ public class Tienda {
             return Optional.empty();
         }
         return Optional.of(producto);
+    }
+    //punto 11
+    public List<Cliente> clientesCiudadDada(String ciudad){
+        List<Cliente> clientesCiudad = new ArrayList<>();
+        for(Cliente ayuda: listaClientes){
+            if(ayuda.getCiudadResidencia().trim().equalsIgnoreCase(ciudad)){
+                clientesCiudad.add(ayuda);
+            }
+        }
+        return clientesCiudad;
     }
 }

@@ -20,9 +20,6 @@ public record Factura(String codigo, LocalDate fecha, double total, EstadoFactur
                 ", cliente=" + cliente +
                 '}';
     }
-    public void agregarDetallesFactura(DetalleFactura detalleFactura){
-        listaDetallesFactura.add(detalleFactura);
-    }
 
     public boolean tieneCliente(String letraBuscar){
         boolean noEncontrado = true;

@@ -31,17 +31,18 @@ public class Main {
                     "\n7. Generar Factura."+
                     "\n8. Eliminar la factura."+
                     "\n9. Buscar factura."+
-                    "\n10. Mostrar los productos ordenados de precio menor a mayor."+
-                    "\n11. Mostrar los productos ordenados de precio menor a mayor."+
-                    "\n12. Mostrar los productos ordenados de precio menor a mayor."+
-                    "\n13. Mostrar los productos ordenados de precio menor a mayor."+
-                    "\n14. Mostrar los productos ordenados de precio menor a mayor."+
+                    "\n10. Mostrar los productos con una cantidad disponible mayor o igual a 10."+
+                    "\n11. Mostrar los productos los codigos de los productos con una cantidad disponible entre 10 y 50."+
+                    "\n12. Mostrar los clientes que hayan comprado el 07 de octubre de 2026."+
+                    "\n13. Mostrar las facturas que tenga un cliente donde su nombre empiece por R."+
+                    "\n14. Mostrar las facturas donde se haya comprado un iphone 16pro max."+
                     "\n15. Mostrar las facturas de un cliente que se llame juan y compre un iphone 16pro max."+
                     "\n16. Mostrar los productos de una categoria."+
                     "\n17. Mostrar los productos en un rango de precios."+
                     "\n18. Mostrar los productos ordenados de precio menor a mayor."+
                     "\n19. Mostrar el producto con el precio mayor."+
-                    "\n20. Salir."));
+                    "\n20. Mostrar todos los clientes pertenecientes a una ciudad."+
+                    "\n21. Salir."));
 
 
             switch(opcion){
@@ -83,7 +84,9 @@ public class Main {
                     break;
                 case 19 : mostrarFacturaMain(tienda);
                     break;
-                case 20: JOptionPane.showMessageDialog(null, "Gracias por usar el sistema.");
+                case 20 : mostrarFacturaMain(tienda);
+                    break;
+                case 21: JOptionPane.showMessageDialog(null, "Gracias por usar el sistema.");
                     break;
                 default: JOptionPane.showMessageDialog(null, "Opcion invalida.");
                     break;
@@ -297,6 +300,15 @@ public class Main {
             }
         }else {
             JOptionPane.showMessageDialog(null, "Esa categoria no existe.");
+        }
+    }
+    public static void pregunta11(Tienda tienda){
+        String ciudad = JOptionPane.showInputDialog(null,"Ingresa la ciudad de la cual quieres saber todos sus clientes:");
+        List<Cliente> clientesCiudad = tienda.clientesCiudadDada(ciudad);
+        if(!clientesCiudad.isEmpty()) {
+            JOptionPane.showMessageDialog(null, clientesCiudad.toString());
+        }else {
+            JOptionPane.showMessageDialog(null, "No hay clientes en esta ciudad.");
         }
     }
 }
