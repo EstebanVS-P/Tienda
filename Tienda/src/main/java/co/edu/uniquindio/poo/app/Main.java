@@ -32,14 +32,14 @@ public class Main {
                     "\n8. Eliminar la factura."+
                     "\n9. Buscar factura."+
                     "\n10. Mostrar los productos con una cantidad disponible mayor o igual a 10."+
-                    "\n11. Mostrar los productos los codigos de los productos con una cantidad disponible entre 10 y 50."+
-                    "\n12. Mostrar los clientes que hayan comprado el 07 de octubre de 2026."+
-                    "\n13. Mostrar las facturas que tenga un cliente donde su nombre empiece por R."+
+                    "\n11. Mostrar los codigos de los productos con una cantidad disponible entre 10 y 50."+
+                    "\n12. Mostrar los clientes que hayan comprado en una fecha dada."+
+                    "\n13. Mostrar las facturas que tenga un cliente donde su nombre empiece una letra dada."+
                     "\n14. Mostrar las facturas donde se haya comprado un iphone 16pro max."+
                     "\n15. Mostrar las facturas de un cliente que se llame juan y compre un iphone 16pro max."+
                     "\n16. Mostrar los productos de una categoria."+
                     "\n17. Mostrar los productos en un rango de precios."+
-                    "\n18. Mostrar los productos ordenados de precio menor a mayor."+
+                    "\n18. Mostrar los productos ordenados por precio menor a mayor."+
                     "\n19. Mostrar el producto con el precio mayor."+
                     "\n20. Mostrar todos los clientes pertenecientes a una ciudad."+
                     "\n21. Salir."));
@@ -64,34 +64,34 @@ public class Main {
                     break;
                 case 9 : mostrarFacturaMain(tienda);
                     break;
-                case 10: crearCliente(tienda);
+                case 10: pregunta1(tienda);
                     break;
-                case 11: eliminarClienteMain(tienda);
+                case 11: pregunta2(tienda);
                     break;
-                case 12: mostrarCliente(tienda);
+                case 12: pregunta3(tienda);
                     break;
-                case 13: crearProducto(tienda);
+                case 13: pregunta4(tienda);
                     break;
-                case 14: mostrarProducto(tienda);
+                case 14: pregunta5(tienda);
                     break;
-                case 15 : eliminarProducto(tienda);
+                case 15 : pregunta6(tienda);
                     break;
-                case 16 : generarFactura(tienda);
+                case 16 : pregunta7(tienda);
                     break;
-                case 17 : eliminarFacturaMain(tienda);
+                case 17 : pregunta8(tienda);
                     break;
-                case 18 : mostrarFacturaMain(tienda);
+                case 18 : pregunta9(tienda);
                     break;
-                case 19 : mostrarFacturaMain(tienda);
+                case 19 : pregunta10(tienda);
                     break;
-                case 20 : mostrarFacturaMain(tienda);
+                case 20 : pregunta11(tienda);
                     break;
                 case 21: JOptionPane.showMessageDialog(null, "Gracias por usar el sistema.");
                     break;
                 default: JOptionPane.showMessageDialog(null, "Opcion invalida.");
                     break;
             }
-        }while(opcion != 14);
+        }while(opcion != 21);
     }
     public static void crearCliente(Tienda tienda){
         String documentoIdentidad= JOptionPane.showInputDialog(null,"Ingresa la identificacion del cliente: ");
@@ -289,6 +289,57 @@ public class Main {
             JOptionPane.showMessageDialog(null,"No existe una factura con ese codigo.");
         }
     }
+    public static void pregunta1(Tienda tienda){
+        List<Producto>  productosCantidadMayor10 = tienda.mostrarProductosCanMayorDiez();
+        if(!productosCantidadMayor10.isEmpty()){
+            JOptionPane.showMessageDialog(null, productosCantidadMayor10.toString());
+        }else{
+            JOptionPane.showMessageDialog(null, "No existen productos con una cantidad mayor a 10.");
+        }
+    }
+    public static void pregunta2(Tienda tienda){
+        List<String>  codigosProductos = tienda.productosMayoresCodigos();
+        if(!codigosProductos.isEmpty()){
+            JOptionPane.showMessageDialog(null, codigosProductos.toString());
+        }else{
+            JOptionPane.showMessageDialog(null, "No existen productos que tengas una cantidad disponible entre 10 y 50.");
+        }
+    }
+    public static void pregunta3(Tienda tienda){
+        String fecha = JOptionPane.showInputDialog(null, "Ingresa la fecha a consultar los clientes que compraron (AAAA-MM-DD):");
+        LocalDate fechaConsulta = LocalDate.parse(fecha);
+        List<Cliente>  clientesCompra07 = tienda.clientesComprados7(fechaConsulta);
+        if(!clientesCompra07.isEmpty()){
+            JOptionPane.showMessageDialog(null, clientesCompra07.toString());
+        }else{
+            JOptionPane.showMessageDialog(null, "No existen clientes que hayan comprado en esa fecha.");
+        }
+    }
+    public static void pregunta4(Tienda tienda){
+        String letraBuscar = JOptionPane.showInputDialog(null, "Ingresa la letra a revisar si hay facturas de clientes con esta inicial: ");
+        List<Factura> facturasLetra = tienda.facturaClienteC(letraBuscar);
+        if(!facturasLetra.isEmpty()){
+            JOptionPane.showMessageDialog(null, facturasLetra.toString());
+        }else{
+            JOptionPane.showMessageDialog(null, "No existen facturas que el nombre de su cliente empiece por "+letraBuscar+".");
+        }
+    }
+    public static void pregunta5(Tienda tienda){
+        List<Factura> facturasIphone = tienda.facturaIphone();
+        if(!facturasIphone.isEmpty()){
+            JOptionPane.showMessageDialog(null, facturasIphone.toString());
+        }else{
+            JOptionPane.showMessageDialog(null, "No existen facturas de compra de iphones 16pro max.");
+        }
+    }
+    public static void pregunta6(Tienda tienda){
+        List<Factura> facturasJuan = tienda.facturasClientesJuan();
+        if(!facturasJuan.isEmpty()){
+            JOptionPane.showMessageDialog(null, facturasJuan.toString());
+        }else{
+            JOptionPane.showMessageDialog(null, "No existen clientes que se llamen juan y hayan comprado un iphone 16pro max.");
+        }
+    }
     public static void pregunta7 (Tienda tienda){
         String categoria = JOptionPane.showInputDialog(null,"Ingresa la categoria de la cual quieres saber todos sus productos:");
         Categoria categoriaSeleccionada = Categoria.valueOf(categoria.toUpperCase());
@@ -300,6 +351,32 @@ public class Main {
             }
         }else {
             JOptionPane.showMessageDialog(null, "Esa categoria no existe.");
+        }
+    }
+    public static void pregunta8(Tienda tienda){
+        float precioMaximo = Float.valueOf(JOptionPane.showInputDialog(null,"Cual quieres que sea el precio maximo de los productos:"));
+        float precioMinimo = Float.valueOf(JOptionPane.showInputDialog(null,"Cual quieres que sea el precio minimo de los productos:")) ;
+        List<Producto> productosRango = tienda.precioRango(precioMaximo,precioMinimo);
+        if(!productosRango.isEmpty()){
+            JOptionPane.showMessageDialog(null, productosRango.toString());
+        }else{
+            JOptionPane.showMessageDialog(null, "No existen productos en este rango.");
+        }
+    }
+    public static void pregunta9(Tienda tienda){
+        List<Producto> productosMayorMenor = tienda.productosMenorMayor();
+        if(!productosMayorMenor.isEmpty()){
+            JOptionPane.showMessageDialog(null, productosMayorMenor.toString());
+        }else{
+            JOptionPane.showMessageDialog(null, "No existen productos.");
+        }
+    }
+    public static void pregunta10(Tienda tienda){
+        Optional<Producto> productoMayor = tienda.buscarProductoMayor();
+        if(productoMayor.isPresent()){
+            JOptionPane.showMessageDialog(null, productoMayor.toString());
+        }else{
+            JOptionPane.showMessageDialog(null, "No existen productos.");
         }
     }
     public static void pregunta11(Tienda tienda){
